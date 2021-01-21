@@ -90,14 +90,16 @@ class Sender
             throw new ErrorException('open sender mail but empty sendTo');
         }
 
-        if (
-            $this->send_type == self::SEND_MESSAGE &&
-            empty($this->message->sendTo)
-        ) {
-            throw new ErrorException('open sender message but empty sendTo');
+        if ($this->send_type == self::SEND_MESSAGE) {
+            if (empty($this->message->sendTo))
+                throw new ErrorException('open sender message but empty sendTo');
+            if (empty($this->message->tplstr))
+                throw new ErrorException('open sender message but empty tplstr');
         }
 
         if ($this->send_type == self::SEND_ALL) {
+            if (empty($this->message->tplstr))
+                throw new ErrorException('open sender message but empty tplstr');
             if (empty($this->mail->sendTo) && empty($this->message->sendTo)) {
                 throw new ErrorException('open sender both but empty sendTo');
             }
@@ -152,7 +154,7 @@ class Sender
             throw new ErrorException(sprintf("code:%s, msg:%s", $result->isSucc(), $result->msg()));
 
         $tpl = $result->data()['tpl_content'];
-        $tpl = str_replace('#code#', $content, $tpl);
+        $tpl = str_replace($this->message->tplstr, $content, $tpl);
 
         $param = [
             YunpianClient::MOBILE => $this->message->sendTo,
