@@ -35,21 +35,17 @@ class BaseTask extends BaseObject implements ITask
     public function init()
     {
         $this->sender = new Sender();
-        $config = $this->getConfig();
+        // 阻塞读取stdin的数据
+        $stdin = fread(STDIN, 1024);
+        $config = unserialize($stdin);
+        if (
+            empty($config['cron']) ||
+            empty($config['alarm_limit'])
+        ) {
+            throw new ErrorException('cron||alarm_limit is empty');
+        }
         Helper::configure($this, $config);
         $this->logger = Helper::getLogger('guarder', $this->file);
-    }
-
-    /**
-     * 从父进程获取必要数据
-     *
-     * @return void
-     */
-    protected function getConfig()
-    {
-        $stdin = fread(STDIN, 1024);
-        $this->logger->debug($stdin);
-        $config = unserialize($stdin);
         return $config;
     }
 
