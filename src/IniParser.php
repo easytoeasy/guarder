@@ -53,9 +53,16 @@ class IniParser
     public static function getDirFiles($path)
     {
         if (empty($path)) return false;
+        
         $str = strrchr($path, '/'); //正则匹配返回类似：/*.ini
         $dir = str_replace($str, '', $path);
-        if (!is_dir($dir)) return false;
+
+        // 配置文件是相对路径
+        if (!strncmp($dir, '.', 1)) {
+            $dir = str_replace('./', __DIR__ . '/config/', $dir);
+        }
+        if (!is_dir($dir)) 
+            throw new ErrorException('has no such file or directory:' . $dir);
         $str = str_replace(['/', '.', '*'], ['', '\.', '.*?'], $str);
         $pattern =  '/^' . $str . '$/';
         $files = scandir($dir);
