@@ -1,0 +1,9 @@
+.DS_Store
+/src/config/task/
+/src/config/guarder.ini
+/src/config/receiver.ini
+/vendor/
+composer.lock
+/src/tasks/*.php
+
+

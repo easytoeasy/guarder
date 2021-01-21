@@ -1,0 +1,43 @@
+<?php
+
+namespace pzr\guarder\tasks;
+
+use pzr\guarder\BaseTask;
+
+
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
+
+$t1 = new BaseTask();
+$t1->run(function () use ($t1) {
+    $retry  = $t1->retry;
+    $sender = $t1->getSender();
+    $logger = $t1->getLogger();
+    $retry = $retry ?: 3;
+    $try = 0;
+    $hosts = [
+        '127.0.0.1',
+    ];
+    $cmd = sprintf("fping %s 2>/dev/null", implode(' ', $hosts));
+    do {
+        $output = array();
+        exec($cmd, $output);
+        $alive = true;
+        foreach($output as $k=>$str) {
+            if (!isAlive($str)) {
+                $alive = false;
+                break;
+            }
+        }
+        if ($alive) break;
+        usleep(1000000); //异常时沉睡1s再继续执行
+    } while (++$try < $retry);
+
+    if (!$alive) {
+        $content = implode(', ', $output);
+        $subject = '服务器alive监控';
+        $logger->info($content);
+        $sender->send($content, $subject);
+        return true;
+    }
+    return false;
+});

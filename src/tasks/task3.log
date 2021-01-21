@@ -1,0 +1,72 @@
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14
+PHP Fatal error:  Uncaught ErrorException: some error in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php:14
+Stack trace:
+#0 /Users/pzr/Documents/private/Guarder/src/BaseTask.php(75): pzr\guarder\tasks\{closure}()
+#1 /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php(15): pzr\guarder\BaseTask->run(Object(Closure))
+#2 {main}
+  thrown in /Users/pzr/Documents/private/Guarder/src/tasks/Exception.php on line 14

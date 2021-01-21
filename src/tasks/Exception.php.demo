@@ -1,0 +1,15 @@
+<?php
+
+namespace pzr\guarder\tasks;
+
+use ErrorException;
+use pzr\guarder\BaseTask;
+
+
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
+
+
+$t1 = new BaseTask();
+$t1->run(function () use ($t1) {
+    throw new ErrorException('some error');
+});

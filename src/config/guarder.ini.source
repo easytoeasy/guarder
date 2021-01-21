@@ -1,0 +1,7 @@
+user = 
+passwd = 
+host = 127.0.0.1
+port = 7865
+ppid_file = /tmp/guarder.pid
+; 任务配置的绝对路径
+files = ./task/*.ini

@@ -1,0 +1,21 @@
+[receiver]
+; 邮件通知，多个用户逗号隔开
+mailers = 
+; 短信通知，多个号码逗号隔开
+phones =
+; 0不发送，1发送邮件，2发送短信，3两者都发
+send_type = 0
+
+; 云片的apikey和模板ID
+[message]
+apikey = 
+tplid = 
+
+[mail]
+host = smtp.163.com
+username = xxx@163.com
+password = xxx
+port = 994
+from = xxx@163.com
+name = xxx
+
