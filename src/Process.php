@@ -86,10 +86,10 @@ class Process
             $this->initTasker();
 
             // 测试时打开很好用
-            if (empty($this->childPids)) {
-                $stream->close();
-                break;
-            }
+            // if (empty($this->childPids)) {
+            //     $stream->close();
+            //     break;
+            // }
 
             //接收HTTP请求
             $stream->accept(function ($program, $action) {
