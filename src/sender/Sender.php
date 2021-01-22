@@ -19,7 +19,7 @@ class Sender extends BaseObject
 
     public function init()
     {
-        $this->logger = Helper::getLogger('Sender', __DIR__ . '/send.log', Logger::DEBUG);
+        $this->logger = Helper::getLogger('Sender', $file='', Logger::DEBUG);
         $this->ini = IniParser::parseReceiver();
         $this->check();
     }

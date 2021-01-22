@@ -17,17 +17,15 @@ final class TestIniParser extends TestCase
         $file = IniParser::getReceiverFile();
         $this->assertFileExists($file);
         $ini = IniParser::parseReceiver();
-        var_export($ini);
+        // var_export($ini);
     }
 
     public function testSenderMailer()
     {
-        // $program = 'common';
-        // $program = 'serv_state';
-        $program = 'sztcgw';
+        $program = 'common';
         $sender = new Sender();
         $sender->setProgram($program);
-        // $sender->send('mynames', 'test');
+        $sender->send('mynames', 'test');
     }
 
 }
