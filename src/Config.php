@@ -14,6 +14,7 @@ class Config extends BaseObject
     public $taskers = array();
     public $ppid_file;
     public $logfile;
+    public $receiver;
 
     public function check()
     {

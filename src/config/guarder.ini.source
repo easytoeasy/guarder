@@ -1,7 +1,10 @@
-user = 
-passwd = 
+user = peng
+passwd = 123456
 host = 127.0.0.1
 port = 7865
+; 保存父进程ID文件
 ppid_file = /tmp/guarder.pid
-; 任务配置的绝对路径
+; 任务配置
 files = ./task/*.ini
+; 接收通知配置
+receiver = ./receiver.ini

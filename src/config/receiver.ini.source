@@ -1,21 +1,43 @@
-[receiver]
-; 邮件通知，多个用户逗号隔开
-mailers = 
-; 短信通知，多个号码逗号隔开
-phones =
-; 0不发送，1发送邮件，2发送短信，3两者都发
-send_type = 0
+[common]
+; 多个邮件地址发送
+mailers[] = xxx@163.com
+; 多个手机号码发送逗号隔开
+phones = ;手机号码
+weixin[] = 
+; 0不发送，1邮件，2短信，3微信，100都发, 
+; 多个方式发送逗号隔开
+send_type = 1
 
-; 云片的apikey和模板ID
-[message]
-apikey = 
-tplid = 
+; 对应子任务的program
+[serv_state]
+mailers[] = xxx@163.com
+phones = ;手机号码
+send_type = 2
 
-[mail]
-host = smtp.163.com
-username = xxx@163.com
-password = xxx
+; 对应子任务的program
+[sztcgw]
+mailers[] = xxx@163.com
+phones = ;手机号码
+send_type = 1,2
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;通知方式配置;;;;;;;;;;;;;;;;;;;;;;
+; 云片短信通知，对应send_type:2
+[yunpian]
+apikey = ''
+tplid = ''
+; 对应短信模板的占位符
+tplstr = ''
+
+; 邮件通知，对应send_type:1
+[mailer]
+host = 'smtp.163.com'
+username = 'xxx@163.com'
+password = 'xxx'
 port = 994
-from = xxx@163.com
-name = xxx
+from = 'xxx@163.com'
+name = 'Guarder'
 
+; 微信通知，对应send_type:3
+[weixin]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

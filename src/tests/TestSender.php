@@ -14,19 +14,20 @@ final class TestIniParser extends TestCase
 
     public function testParser()
     {
-        $config = IniParser::parse();
-        $this->assertInstanceOf(Config::class, $config);
-        $this->assertObjectHasAttribute('taskers', $config);
-        $this->assertNotEmpty($config->taskers);
-        // var_export($config);
+        $file = IniParser::getReceiverFile();
+        $this->assertFileExists($file);
+        $ini = IniParser::parseReceiver();
+        var_export($ini);
     }
 
-    public function testSender()
+    public function testSenderMailer()
     {
-        $program = 'common';
+        // $program = 'common';
+        // $program = 'serv_state';
+        $program = 'sztcgw';
         $sender = new Sender();
         $sender->setProgram($program);
-        $sender->send('mynames', 'test');
+        // $sender->send('mynames', 'test');
     }
 
 }

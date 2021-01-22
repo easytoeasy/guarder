@@ -8,9 +8,9 @@ use Monolog\Logger;
 class Helper
 {
 
-    public static function getLogger($name, $file='')
+    public static function getLogger($name, $file='', $level = Logger::DEBUG)
     {
-        $handler = new FileHandler($file);
+        $handler = new FileHandler($file, $level);
         $logger = new Logger($name, [$handler]);
         $logger->setTimezone(new DateTimeZone('Asia/Shanghai'));
         $logger->useMicrosecondTimestamps(false);

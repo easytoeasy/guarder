@@ -13,8 +13,6 @@ date_default_timezone_set('Asia/Shanghai');
 
 class Process
 {
-    /** 保存ppid的文件 */
-    const PPID_FILE = '/tmp/guarder.pid';
     /** 子进程正常退出 */
     const NORMAL_CODE = 0;
     /** 子进程通知结束退出 */
@@ -39,23 +37,29 @@ class Process
     protected $message = 'Init Process OK';
     /** @var Stream */
     protected $stream;
-
+    /** @var string 保存父进程的pid */
+    protected $ppidFile;
 
 
     public function __construct()
     {
         $this->config = IniParser::parse();
         $this->taskers = $this->config->taskers;
+        $this->ppidFile = IniParser::getPpidFile();
+        $this->config->taskers = array();
+        $this->config->ppid_file = '';
         $this->logger = Helper::getLogger('process');
     }
 
     public function run()
     {
-        if (empty($this->config->taskers)) {
-            throw new ErrorException('no task');
+        if (empty($this->taskers)) {
+            throw new ErrorException('taskers is empty');
         }
+
+        // 父进程还在，不让重启
         if ($this->notifyMaster()) {
-            return;
+            throw new ErrorException('master still alive');
         }
 
         $pid = pcntl_fork();
@@ -79,7 +83,7 @@ class Process
         $stream = new Stream($this->config);
         $this->stream = $stream;
         // 将主进程ID写入文件
-        file_put_contents(self::PPID_FILE, getmypid());
+        file_put_contents($this->ppidFile, getmypid());
         // master进程继续
         while (true) {
             // 初始化子进程
@@ -97,6 +101,7 @@ class Process
                 return $this->display();
             });
 
+            // 子进程回收
             $this->waitpid();
         }
     }
@@ -241,8 +246,7 @@ class Process
      */
     protected function notifyMaster()
     {
-        if (!is_file(self::PPID_FILE)) return false;
-        $ppid = file_get_contents(self::PPID_FILE);
+        $ppid = file_get_contents($this->ppidFile);
         $isAlive = Helper::isProcessAlive($ppid);
         if (!$isAlive) return false;
         return true;
