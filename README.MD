@@ -84,14 +84,14 @@ logfile=
 ```
 
 ### 关于子进程退出状态监控
-> 回收子进程后，通过以下方法监控子进程退出的状态。
-$state  = pcntl_wifexited($status);     //正常退出返回true，否则返回false
-$code   = pcntl_wexitstatus($status);   //返回进程退出的状态码
+> 回收子进程后，通过以下方法监控子进程退出的状态。 
+$state  = pcntl_wifexited($status);     //正常退出返回true，否则返回false  
+$code   = pcntl_wexitstatus($status);   //返回进程退出的状态码  
 
-1）正常退出：code=0，state=1。触发restart
-2）通知结束：code=1，state=1。子进程通知完毕后`exit(1)`，触发restart
-3）抛出异常：code=255，state=1。不触发restart
-4）命令退出：code=0，state=0。触发restart
+1）正常退出：code=0，state=1。触发restart  
+2）通知结束：code=1，state=1。子进程通知完毕后`exit(1)`，触发restart  
+3）抛出异常：code=255，state=1。不触发restart  
+4）命令退出：code=0，state=0。触发restart  
 
 
 ### 启动脚本
