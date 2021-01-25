@@ -12,6 +12,7 @@ class IniParser
     public static $guarder_ini = [
         __DIR__ . '/config/guarder.ini',
         '/etc/guarder.ini',
+        '/etc/config/guarder.ini',
         '/etc/guarder/guarder.ini',
     ];
 
