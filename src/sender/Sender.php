@@ -19,7 +19,7 @@ class Sender extends BaseObject
 
     public function init()
     {
-        $this->logger = Helper::getLogger('Sender', $file='', Logger::DEBUG);
+        $this->logger = Helper::getLogger('Sender', $file = '', Logger::DEBUG);
         $this->ini = IniParser::parseReceiver();
         $this->check();
     }
@@ -31,28 +31,26 @@ class Sender extends BaseObject
             $receiver = new Receiver($this->ini[$this->getProgram()]);
         }
         if (empty($receiver)) {
-            $this->logger->error('Failed instance of Receiver class');
+            $this->logger->error(
+                sprintf("program:%s to receiver failed", $this->getProgram())
+            );
             return false;
         }
         $sendType = $receiver->getSend_type();
-        $this->logger->debug('sendType:' . $sendType);
-        if (empty($sendType)) return false;
-        $sendTypes = explode(',', $sendType);
-        $classMap = SendType::getSenderClassMap();
-        foreach ($sendTypes as $type) {
-            if (empty($type)) continue;
-            $class = isset($classMap[$type]) ? $classMap[$type] : '';
-            $this->logger->debug('send class:' . $class);
-            if (empty($class)) continue;
+        $classes = SendType::getClasses($sendType);
+        if (empty($classes)) {
+            $this->logger->debug(
+                sprintf("program:%s to sendClass failed", $this->getProgram())
+            );
+            return false;
+        }
+        foreach ($classes as $class) {
             $class = new $class();
             if ($class instanceof Message) {
-                $this->logger->debug('start sending message...');
                 $class->setContent($content)
                     ->setSubject($subject)
                     ->setReceiver($receiver)
                     ->send();
-            } else {
-                $this->logger->error(sprintf("%s is not instance of Message class", get_class($class)));
             }
         }
     }
@@ -60,7 +58,7 @@ class Sender extends BaseObject
     public function check(): bool
     {
         if (empty($this->ini)) {
-            $this->logger->error('receiver ini is empty');
+            $this->logger->error('invalid value of receiver.ini');
             return false;
         }
         return true;

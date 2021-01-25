@@ -14,15 +14,25 @@ class SendType
 
     const FANOUT    = 100;
 
-    /**
-     * @return array
-     */
-    public static function getSenderClassMap()
+    public static $senderClassMap = [
+        self::YUNPIAN   => Yunpian::class,
+        self::MAILER    => Mailer::class,
+    ];
+
+    public static function getClasses(string $typeStr)
     {
-        return [
-            self::YUNPIAN   => Yunpian::class,
-            self::MAILER    => Mailer::class,
-        ];
+        if (empty($typeStr))
+            return false;
+        $types = explode(',', $typeStr);
+        if (in_array(self::FANOUT, $types))
+            return array_values(self::$senderClassMap);
+
+        $class = [];
+        foreach($types as $type) {
+            if (!isset(self::$senderClassMap[$type])) continue;
+            $class[] = self::$senderClassMap[$type];
+        }
+        return $class;
     }
 
     public static function getSendTypes()
