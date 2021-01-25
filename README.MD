@@ -61,10 +61,10 @@ name = 'Guarder'
 [weixin]
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ```
-*.ini
+test.ini
 ```ini
 ; 子进程唯一的名称
-program = sztcgw
+program = test
 ; 启动子进程数量
 numprocs = 1
 ; 待启动脚本的执行目录
