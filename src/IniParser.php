@@ -95,7 +95,7 @@ class IniParser
     {
         $config = self::getConfig();
         $file = $config->ppid_file;
-        if(empty($file)) {
+        if (empty($file)) {
             $file = '/tmp/guarder.pid';
         }
         if (!is_file($file)) {
@@ -107,7 +107,7 @@ class IniParser
     public static function parseReceiver()
     {
         $file = self::getReceiverFile();
-        $ini = parse_ini_file($file, true);
+        $ini = self::parse_ini_file_extended($file, true);
         return $ini;
     }
 
@@ -129,6 +129,38 @@ class IniParser
             throw new ErrorException('guarder.ini parse error');
         }
         self::$config = $config;
+        return $config;
+    }
+
+    /**
+     * Parses INI file adding extends functionality via ":base" postfix on namespace.
+     *
+     * @param string $filename
+     * @return array
+     */
+    public static function parse_ini_file_extended($filename)
+    {
+        $p_ini = parse_ini_file($filename, true);
+        $config = array();
+        foreach ($p_ini as $namespace => $properties) {
+            if (strpos($namespace, ':') === false) {
+                $config[$namespace] = $properties;
+                continue;
+            }
+            list($name, $extends) = explode(':', $namespace);
+            $name = trim($name);
+            $extends = trim($extends);
+            // create namespace if necessary
+            if (!isset($config[$name])) $config[$name] = array();
+            // inherit base namespace
+            if (isset($p_ini[$extends])) {
+                foreach ($p_ini[$extends] as $prop => $val)
+                    $config[$name][$prop] = $val;
+            }
+            // overwrite / set current namespace values
+            foreach ($properties as $prop => $val)
+                $config[$name][$prop] = $val;
+        }
         return $config;
     }
 }
