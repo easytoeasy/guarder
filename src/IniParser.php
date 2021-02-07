@@ -99,9 +99,9 @@ class IniParser
         if (empty($file)) {
             $file = '/tmp/guarder.pid';
         }
-        if (!is_file($file)) {
-            throw new ErrorException('has no such file:' . $file);
-        }
+        // if (!is_file($file)) {
+        //     throw new ErrorException('has no such file:' . $file);
+        // }
         return $file;
     }
 
