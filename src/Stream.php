@@ -43,7 +43,7 @@ class Stream
 	public function accept(Closure $callback)
 	{
 		$read = $this->client;
-		if (stream_select($read, $write, $except, 1) < 1) return;
+		if (@stream_select($read, $write, $except, 1) < 1) return;
 		if (in_array($this->socket, $read)) {
 			$cs = stream_socket_accept($this->socket);
 			$this->client[] = $cs;

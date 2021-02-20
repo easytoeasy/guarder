@@ -1,0 +1,79 @@
+#!/bin/sh
+
+# 建议是绝对路径，从而可以copy到/etc/init.d
+prog="path of Process.php"
+# 可以随意取名
+name='Guarder Process'
+# php执行脚本
+exec=/usr/bin/php
+# 默认配置的pid目录，必须和该项目保持一致
+pidfile=/var/run/guarder.pid
+
+start() {
+    if [ $UID -ne 0 ]; then
+        echo "User has insufficient privilege."
+        exit 4
+    fi
+    [ -x $exec ] || {
+        echo "can't execute:$exec"
+        exit 5
+    }
+    # echo $"Starting $name: "
+    $exec $prog >/dev/null 2>&1
+    retval=$?
+    [ $retval -eq 0 ] && echo "Start OK"
+}
+
+stop() {
+    if [ $UID -ne 0 ] ; then
+        echo "User has insufficient privilege."
+        exit 4
+    fi
+    if [ ! -f $pidfile ]; then
+        echo "has no such pidfile:$pidfile."
+        exit 4
+    fi
+    echo $"Stopping $name: "
+    pid=`cat $pidfile`
+	if [ -n "`ps aux | awk '{print $2}' | grep -w $pid`" ]; then
+		rs=`kill -15 $pid`
+        [ -n $rs ] && rm -f $pidfile
+	else
+		echo $"Stopping Failed"
+        RETVAL=3
+	fi
+    retval=$?
+    [ $retval -eq 0 ] && echo "Stopped OK"
+}
+
+status() {
+    if [ ! -f $pidfile ]; then
+        echo "has no such pidfile:$pidfile."
+        exit 4
+    fi
+
+    pid=`cat $pidfile`
+	if [ -n "`ps aux | awk '{print $2}' | grep -w $pid`" ]; then
+		echo "$name pid:$pid is running..."
+    else
+        echo "$name is stopped."
+	fi
+
+}
+
+case "$1" in
+start)
+    $1
+    ;;
+stop)
+    $1
+    ;;
+status)
+    $1
+    ;;
+*)
+    echo $"Usage: $0 {start|stop|status}"
+    exit 2
+    ;;
+esac
+exit $?

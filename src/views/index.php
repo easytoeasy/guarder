@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Amqp Status</title>
+  <title>Guarder Status</title>
   <link href="css/supervisor.css" rel="stylesheet" type="text/css">
   <link href="images/icon.png" rel="icon" type="image/png">
 </head>

@@ -6,6 +6,7 @@ use ErrorException;
 use Exception;
 use Monolog\Logger;
 use Smarty;
+use Throwable;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -59,18 +60,19 @@ class Process
 
         // 父进程还在，不让重启
         if ($this->notifyMaster()) {
-            throw new ErrorException('master still alive');
+            echo 'master still alive';
+            exit(3);
         }
 
         $pid = pcntl_fork();
         if ($pid < 0) {
             throw new ErrorException('fork error');
-            exit;
+            exit(3);
         } elseif ($pid > 0) {
-            exit;
+            exit(0);
         }
         if (!posix_setsid()) {
-            exit;
+            exit(3);
         }
 
         @cli_set_process_title('Guarder Process');
@@ -203,30 +205,39 @@ class Process
                 unset($this->childPids[$program]);
                 // 回收重启前的子进程
                 if (!isset($this->taskers[$program])) continue;
+                /** @var Tasker $c */
                 $c = $this->taskers[$program];
-                $state = pcntl_wifexited($status);
+                /**
+                 * @see https://www.jb51.net/article/73377.htm
+                 * 0 正常退出
+                 * 1 一般性未知错误
+                 * 2 不适合的shell命令
+                 * 126 调用的命令无法执行
+                 * 127 命令没找到
+                 * 128 非法参数导致退出
+                 * 128+n Fatal error signal ”n”：如`kill -9` 返回137
+                 * 130 脚本被`Ctrl C`终止
+                 * 255 脚本发生了异常退出了。那么为什么是255呢？因为状态码的范围是0-255，超过了范围。
+                 */
                 $code = pcntl_wexitstatus($status);
-                $this->logger->debug(sprintf("pid:%s, state:%s, code:%s", $pid, $state, $code));
-
-                // 捕获异常退出
-                if (!in_array($code, $this->exceptedCode)) {
-                    $this->updateState($c, State::FATAL);
-                    return;
+                $this->logger->debug(sprintf("pid:%s, code:%s", $pid, $code));
+                switch ($code) {
+                    case 0: //正常退出，不重启
+                        $state = State::STOPPED;
+                        break;
+                    case 1: // supervisor是将1、2的code码作为配置是否重启
+                    case 2:
+                        // $state = $c->auto_restart ? State::BACKOFF : State::EXITED;
+                        $state = State::EXITED;
+                        break;
+                    case 255:
+                        $state = State::FATAL;
+                        break;
+                    default:
+                        $state = State::UNKNOWN;
+                        break;
                 }
-                // 通知结束后退出
-                if ($code == self::ALARM_CODE) {
-                    $this->updateState($c, State::STOPPED);
-                    return;
-                }
-                // 命令退出
-                if ($code == self::NORMAL_CODE && $state === false) {
-                    $c->auto_restart ?
-                        $this->updateState($c, State::BACKOFF) :
-                        $this->updateState($c, State::STOPPED);
-                    return;
-                }
-                // 其他情况
-                $this->updateState($c, State::STOPPED);
+                $this->updateState($c, $state);
             }
         }
     }
@@ -246,10 +257,9 @@ class Process
      */
     protected function notifyMaster()
     {
-        $ppid = file_get_contents($this->ppidFile);
-        $isAlive = Helper::isProcessAlive($ppid);
-        if (!$isAlive) return false;
-        return true;
+        if (!is_file($this->ppidFile)) return false;
+        $pid = file_get_contents($this->ppidFile);
+        return `ps aux | awk '{print $2}' | grep -w $pid`;
     }
 
     /**
@@ -263,9 +273,14 @@ class Process
     {
         $descriptorspec = [
             0 => ['pipe', 'r'], //输入，子进程从此管道读取数据
-            // 1 => ['pipe', 'w'], //输出，子进程输出
-            2 => ['file', $c->logfile, 'a'],
         ];
+        $file = $c->logfile ?: IniParser::getCommLogfile();
+        if (empty($file)) {
+            $c->state = State::EXITED;
+            return;
+        }
+        $descriptorspec[1] = ['file', $file, 'a']; //正常输出
+        $descriptorspec[2] = ['file', $file, 'a']; //异常输出
 
         $process = proc_open('exec ' . $c->command, $descriptorspec, $pipes, $c->directory);
         if ($process) {
@@ -297,7 +312,6 @@ class Process
         } else {
             $c->state = State::FATAL;
         }
-        return $c;
     }
 
     protected function display()
@@ -315,15 +329,15 @@ class Process
             return Http::status_404();
         }
 
-        ob_start();
         try {
+            ob_start(null, null, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
             require $sourcePath;
             $response = ob_get_contents();
-        } catch (Exception $e) {
+            ob_end_clean();
+        } catch (Throwable $e) {
             $this->logger->error($e);
-            $response = $e->getMessage();
+            $response = $e->__toString();
         }
-        ob_clean();
         return Http::status_200($response);
     }
 
@@ -349,9 +363,11 @@ if (PHP_SAPI != 'cli') {
     throw new ErrorException('非cli模式不可用');
 }
 
+error_reporting(E_ALL | ~E_WARNING | ~E_NOTICE);
+
 try {
     $cli = new Process();
     $cli->run();
-} catch(Exception $e) {
+} catch (Exception $e) {
     echo $e->getMessage();
 }

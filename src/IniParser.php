@@ -27,17 +27,18 @@ class IniParser
     {
         $config = self::getConfig();
         $files = self::scanFiles($config->files);
-        if (is_array($files)) foreach ($files as $file) {
-            $taskConfig = parse_ini_file($file);
-            $c = new Tasker($taskConfig);
-            if (
-                isset($config->taskers[$c->program]) ||
-                empty($c->program)
-            ) {
-                throw new ErrorException('program empty or duplication');
+        if (is_array($files))
+            foreach ($files as $file) {
+                $taskConfig = parse_ini_file($file);
+                $c = new Tasker($taskConfig);
+                if (
+                    isset($config->taskers[$c->program]) ||
+                    empty($c->program)
+                ) {
+                    throw new ErrorException('program empty or duplication');
+                }
+                $config->taskers[$c->program] = $c;
             }
-            $config->taskers[$c->program] = $c;
-        }
         if (!$config->check()) {
             return false;
         }

@@ -6,5 +6,7 @@
 composer.lock
 /src/tasks/*.php
 /src/tasks/*.log
+guarderd
+.vscode
 
 

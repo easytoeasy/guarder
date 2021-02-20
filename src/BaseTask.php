@@ -72,9 +72,9 @@ class BaseTask extends BaseObject implements ITask
             if ($alarm >= $this->alarm_limit) break;
             usleep(60000000); //1 minute
         }
+        
         $this->logger->info(sprintf("pid: %s 关闭", getmypid()));
-        // 退出状态码为1则不自启动，0则自启动
-        exit(1);
+        exit(0);
     }
 
     /**

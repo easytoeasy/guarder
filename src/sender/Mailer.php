@@ -27,7 +27,7 @@ class Mailer extends Message
             $this->logger->debug(sprintf(
                 "check failed, content:%s, sendTo:%s",
                 $this->content,
-                $this->sendTo
+                implode(',', $this->sendTo)
             ));
             return false;
         }
