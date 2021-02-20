@@ -93,12 +93,12 @@ class IniParser
         return $receiver;
     }
 
-    public static function getPpidFile()
+    public static function getPidFile()
     {
         $config = self::getConfig();
-        $file = $config->ppid_file;
+        $file = $config->pidfile;
         if (empty($file)) {
-            $file = '/tmp/guarder.pid';
+            $file = '/var/run/guarder.pid';
         }
         // if (!is_file($file)) {
         //     throw new ErrorException('has no such file:' . $file);

@@ -14,9 +14,9 @@ class Stream
 	const TCP = 'tcp';
 	const UDP = 'udp';
 
-	public function __construct($config)
+	public function __construct($host, $port)
 	{
-		$host = sprintf("%s://%s:%s", self::TCP, $config->host, $config->port);
+		$host = sprintf("%s://%s:%s", self::TCP, $host, $port);
 		$this->socket = $this->connect($host);
 	}
 

@@ -12,7 +12,7 @@ class Config extends BaseObject
     public $port;
     public $files;
     public $taskers = array();
-    public $ppid_file;
+    public $pidfile;
     public $logfile;
     public $receiver;
 

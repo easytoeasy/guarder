@@ -18,7 +18,7 @@ final class TestIniParser extends TestCase
         $this->assertInstanceOf(Config::class, $config);
         $this->assertObjectHasAttribute('taskers', $config);
         $this->assertNotEmpty($config->taskers);
-        // var_export($config);
+        var_export($config);
     }
 
     public function testSender()

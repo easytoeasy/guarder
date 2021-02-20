@@ -39,17 +39,21 @@ class Process
     /** @var Stream */
     protected $stream;
     /** @var string 保存父进程的pid */
-    protected $ppidFile;
+    protected $pidFile;
+    protected $host;
+    protected $port;
 
 
     public function __construct()
     {
         $this->config = IniParser::parse();
         $this->taskers = $this->config->taskers;
-        $this->ppidFile = IniParser::getPpidFile();
-        $this->config->taskers = array();
-        $this->config->ppid_file = '';
+        $this->pidFile = IniParser::getPidFile();
+        $this->host = $this->config->host;
+        $this->port = $this->config->port;
         $this->logger = Helper::getLogger('process');
+        unset($this->config);
+
     }
 
     public function run()
@@ -82,10 +86,10 @@ class Process
         pcntl_signal(SIGTERM, [$this, 'sigHandler']);
         pcntl_signal(SIGQUIT, [$this, 'sigHandler']);
 
-        $stream = new Stream($this->config);
+        $stream = new Stream($this->host, $this->port);
         $this->stream = $stream;
         // 将主进程ID写入文件
-        file_put_contents($this->ppidFile, getmypid());
+        file_put_contents($this->pidFile, getmypid());
         // master进程继续
         while (true) {
             // 初始化子进程
