@@ -2,6 +2,7 @@
 
 namespace pzr\guarder\sender;
 
+use Exception;
 use Monolog\Logger;
 use pzr\guarder\BaseObject;
 use pzr\guarder\Helper;
@@ -47,10 +48,15 @@ class Sender extends BaseObject
         foreach ($classes as $class) {
             $class = new $class();
             if ($class instanceof Message) {
-                $class->setContent($content)
-                    ->setSubject($subject)
-                    ->setReceiver($receiver)
-                    ->send();
+                try {
+                    $class->setContent($content)
+                        ->setSubject($subject)
+                        ->setReceiver($receiver)
+                        ->send();
+                } catch (Exception $e) {
+                    $this->logger->error('send:' . $e->getMessage());
+                    continue;
+                }
             }
         }
     }
